@@ -9,10 +9,12 @@
     text-decoration: none;
 }
 
+
+
 body {
     width: 100%;
     height: 100%;
-    /* background: linear-gradient(0deg, rgba(136,0,255,1) 0%, rgba(0,0,0,1) 100%); */
+    background: linear-gradient(0deg, rgba(136, 0, 255, 1) 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 .header {
@@ -28,17 +30,17 @@ body {
     margin: 10px;
     width: 60px;
     height: 34px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
+}
+
+/* Hide default HTML checkbox */
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  /* The slider */
-  .slider {
+}
+
+/* The slider */
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -48,9 +50,9 @@ body {
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -60,30 +62,30 @@ body {
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked+.slider {
     background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus+.slider {
     box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
+}
+
+input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+}
+
+/* Rounded sliders */
+.slider.round {
     border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+
+.slider.round:before {
     border-radius: 50%;
-  }
+}
 
 /* parametros del main */
 main {
@@ -150,10 +152,11 @@ main {
     border-radius: 5px;
     border: none;
     width: 100%;
+    margin: 0 5px;
 }
 
 
-.button:hover{
+.button:hover {
     transform: scale(1.05);
     transition: all 0.35s ease-in-out;
     background-color: cornflowerblue;
@@ -166,6 +169,23 @@ main {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.elements-especial {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.elements-especial a {
+margin: 0 5px;
+}
+
+.elements-especial a:hover {
+    text-decoration: underline;
+        }
 
 .button-container {
     display: flex;
@@ -198,16 +218,10 @@ main {
 
 /* Opciones de Menú principal */
 
-#nombre{
+.inputs {
     font-size: 15px;
     text-align: center;
 }
-
-#apellido{
-    font-size: 15px;
-    text-align: center;
-}
-
 
 .menus {
     width: 100%;
@@ -269,14 +283,14 @@ main {
     border-radius: 5px;
 }
 
-.boton-buscar:hover{
+.boton-buscar:hover {
     transform: scale(1.05);
     transition: all 0.35s ease-in-out;
     background-color: cornflowerblue;
     font-weight: bold;
 }
 
-.boton-contextual{
+.boton-contextual {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -291,7 +305,7 @@ main {
     border-radius: 5px;
 }
 
-.boton-contextual:hover{
+.boton-contextual:hover {
     transition: all 0.35s ease-in-out;
     background-color: cornflowerblue;
     font-weight: bold;
@@ -361,7 +375,10 @@ main {
     width: 65px;
 }
 
-.td-tipo, .td-cantidad, .td-stock, .td-subtotal{
+.td-tipo,
+.td-cantidad,
+.td-stock,
+.td-subtotal {
     width: 5%;
     max-width: 70px;
     min-width: 35px;
@@ -390,26 +407,26 @@ main {
 }
 
 .td-form form input {
-margin: 0 5px;
-font-size: 18px;
-height: 20px;
+    margin: 0 5px;
+    font-size: 18px;
+    height: 20px;
 }
 
-.foot{
+.foot {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
 
-.total-container{
+.total-container {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     width: 50%;
 }
 
-.total{
+.total {
     display: flex;
     justify-content: center;
     width: 150px;
@@ -421,12 +438,15 @@ height: 20px;
     border-radius: 5px;
 }
 
-.nota{
+.nota {
     text-align: center;
     font-size: 12px;
 }
 
-#salida, #pagar, #quitar-elementos, #cancelar {
+#salida,
+#pagar,
+#quitar-elementos,
+#cancelar {
     display: flex;
     justify-content: center;
     width: 250px;
@@ -438,7 +458,10 @@ height: 20px;
     border-radius: 5px;
 }
 
-#salida:hover, #pagar:hover, #quitar-elementos:hover, #cancelar:hover{
+#salida:hover,
+#pagar:hover,
+#quitar-elementos:hover,
+#cancelar:hover {
     transform: scale(1.05);
     transition: all 0.35s ease-in-out;
     background-color: cornflowerblue;
@@ -459,7 +482,7 @@ height: 20px;
     border-radius: 5px;
 }
 
-.confirmar-pago:hover{
+.confirmar-pago:hover {
     transform: scale(1.05);
     transition: all 0.35s ease-in-out;
     background-color: red;
@@ -467,35 +490,41 @@ height: 20px;
     font-weight: bold;
 }
 
-#pago{
+#pago {
     text-align: center;
 }
 
 
 /* media queries */
 @media (max-width: 700px) {
-    .td-tipo, .td-cantidad, .td-stock, .td-subtotal{
+
+    .td-tipo,
+    .td-cantidad,
+    .td-stock,
+    .td-subtotal {
         width: 10%;
         max-width: 70px;
         min-width: 35px;
     }
-    
+
     .td-nombre {
         width: 30%;
         max-width: 250px;
         min-width: 100px;
     }
-    
+
     .td-precio {
         width: 10%;
         max-width: 70px;
         min-width: 35px;
     }
-    
+
     .td-form {
         width: 160px;
     }
-    .resultado-cabecera , .resultado div {
+
+    .resultado-cabecera,
+    .resultado div {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -508,3 +537,15 @@ height: 20px;
         color: white;
     }
 }
+
+.modo-obscuro :not(.resultado) {
+    filter: invert(1) hue-rotate(180deg);
+  }
+
+  .red-border {
+    border: 1px solid red;
+  }
+
+  .black-border {
+    border: 1px solid black;
+  }

@@ -2,6 +2,24 @@
 
 //Anabella Avena - Ilustradora Gráfica - módulo eCommerce.
 
+//Constructor de Usuarios.
+class Usuario {
+    constructor(id, nombreDeUsuario, nombre, apellido, edad, email, contrasena) {
+        this.id = id;
+        this.nombreDeUsuario = nombreDeUsuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = parseFloat(edad);
+        this.email = email;
+        this.contrasena = contrasena;
+    }
+}
+
+const usuarios = [];
+let idcounter = 0;
+let idtotal = idcounter;
+
+
 //Constructor de Productos.
 class Producto {
     constructor(id, tipo, nombre, precio, stockDisponible) {
@@ -58,22 +76,14 @@ cabecera.className = "cabecera";
 cabecera.id = "cabecera"
 const salida = document.createElement("div");
 
+//Modo obscuro switch
+let modoobscuro = document.getElementById('switch-label')
 
+modoobscuro.addEventListener('click', () => {
+    document.documentElement.classList.toggle("dark-mode");
+    document.querySelector(".invertir").classList.toggle("modo-obscuro")
+});
 
-const interruptor = document.getElementById("switch-label");
-interruptor.addEventListener("click", (e) => {
-    e.preventDefault
-    console.log(document.getElementById("switch-label").checked)
-    COLORCHANGER();
-})
-
-function COLORCHANGER () {
-    if (document.getElementById("switch-label").checked == true) {
-       document.body.style.backgroundColor = "red";
-    } else if (document.getElementById("switch-label").checked == false) { 
-       document.body.style.background = "linear-gradient(0deg, rgba(136,0,255,1) 0%, rgba(0,0,0,1) 100%)";
-    }
-}
 
 
 
@@ -81,19 +91,23 @@ function COLORCHANGER () {
 BIENVENIDA();
 
 function BIENVENIDA() {
+
     contenido.innerHTML = `
-    <p class="elements"> Por favor ingrese su nombre y apellido </p>
     <form id="formulario" class="menu-intro">
     <div class="elements">
-    <input id="nombre" placeholder="nombre" type="text">
+    <input class="inputs" placeholder="nombre de usuario" type="text">
     </div>
     <div class="elements">
-    <input id="apellido" placeholder="apellido" type="text">
+    <input class="inputs" placeholder="contraseña" type="password">
     </div>
     <div class="button-container">
-    <button type="submit" class="button">Siguiente --></button>
+    <button type="submit" class="button">Ingresar</button>
     </div>
     </form>
+    <div class="elements-especial">
+    <a id="crearCuenta" class= "pista" href="">crear una cuenta</a>
+    <a class= "pista" href="">olvidé mi contraseña</a>
+    </div>
     `
     const formulario = document.getElementById("formulario");
     formulario.addEventListener("submit", (e) => {
@@ -101,11 +115,113 @@ function BIENVENIDA() {
         if (e.target[0].value === "" || e.target[1].value === "") {
             alerta.innerHTML = "Por favor llene los campos antes de continuar"
         } else {
-            nombre = e.target[0].value;
-            apellido = e.target[1].value;
-            bienvenido.innerHTML = "Bienvenido/a, " + nombre;
-            alerta.replaceChildren();
-            window.setTimeout(MENUPRINCIPAL(), 0);
+            const chequearUsuario = obj => obj.nombreDeUsuario === e.target[0].value;
+            if (usuarios.some(chequearUsuario) === false) {
+                alerta.innerHTML = "No se encuentra al usuario"
+            }else {
+                const encontrado = usuarios.find((user) => {
+                    return user.nombreDeUsuario === e.target[0].value;
+                  });
+                  if (encontrado.contrasena === e.target[1].value) {
+                    nombre = encontrado.nombre
+                    bienvenido.innerHTML = "Bienvenido/a, " + nombre;
+                    alerta.replaceChildren();
+                    MENUPRINCIPAL(), 0;
+                  }
+            }
+        }
+    });
+    const crearCuenta = document.getElementById("crearCuenta");
+    crearCuenta.addEventListener("click", (e) => {
+        e.preventDefault();
+        CREARUSUARIO();
+    })
+}
+
+function CREARUSUARIO() {
+    titulo.innerHTML = "---Creador de Cuenta---";
+    contenido.innerHTML = `
+<p class="elements"> Por favor ingrese su nombre de usuario y contraseña </p>
+<form id="formulario" class="menu-intro">
+<div class="elements">
+<input id="nombre-usuario" class="inputs" placeholder="Elige un nombre de usuario" type="text">
+</div>
+<div class="elements">
+<input id="nombre" class="inputs" placeholder="tu nombre" type="text">
+</div>
+<div class="elements">
+<input id="apellido" class="inputs" placeholder="tu apellido" type="text">
+</div>
+<div class="elements">
+<p class="pista"> tu fecha de cumpleaños </p>
+<input id="fecha-nac" class="inputs" placeholder="dd/mm/aaaa" type="date">
+</div>
+<div class="elements">
+<input id="email-1" class="inputs" placeholder="tu e-mail" type="email">
+<input id="email-2" class="inputs" placeholder="repite tu email" type="email">
+</div>
+<div class="elements">
+<input id="contraseña-1" class="inputs" placeholder="contraseña" type="password">
+<input id="contraseña-2" class="inputs" placeholder="contraseña" type="password">
+</div>
+<div class="button-container">
+<button type="reset" value="reset" class="button">Limpiar</button>
+<button id="crear-usuario" type="submit" class="button">Crear Usuario</button>
+</div>
+</form>
+<button id="salida">volver</button>
+`
+    const volver = document.getElementById("salida");
+    volver.addEventListener("mouseup", (e) => {
+        e.preventDefault();
+        alerta.innerHTML = "";
+        BIENVENIDA();
+    });
+    const agregarUsuario = document.getElementById("formulario");
+    agregarUsuario.addEventListener("submit", (e) => { 
+        e.preventDefault();
+        const chequearUsuario = obj => obj.nombreDeUsuario === e.target[0].value;
+        const años = parseInt(e.target[3].value);
+        function calcularEdad(cumpleaños) {
+            var edadDifMs = Date.now() - cumpleaños;
+            var ageDate = new Date(edadDifMs);
+            return Math.abs(ageDate.getUTCFullYear() - años);
+        }
+        if(e.target[6].value === "" || e.target[7].value === "") {
+            alerta.innerHTML = "cuidado, debes escribir una contraseña ";
+            document.querySelector("#contraseña-1").classList.toggle("red-border");
+            document.querySelector("#contraseña-2").classList.toggle("red-border");
+        } else {
+            if(e.target[4].value === "" || e.target[5].value === ""){
+                alerta.innerHTML = "cuidado, debes escribir una email válido.";
+                    document.querySelector("#email-1").classList.toggle("red-border");
+                    document.querySelector("#email-2").classList.toggle("red-border");
+            } else {
+                if (e.target[6].value === e.target[7].value) {
+                    if (e.target[4].value === e.target[5].value) {
+                        if (usuarios.some(chequearUsuario) === false || usuarios == []) {
+                            idcounter = idcounter + 1
+                            const newUser = new Usuario(idcounter, e.target[0].value, e.target[1].value, e.target[2].value, calcularEdad(años), e.target[4].value, e.target[6].value)
+                            usuarios.push(newUser)
+                            document.querySelectorAll('#formulario input').forEach((input) => {
+                                input.value = '';
+                            });
+                            alerta.innerHTML = "Usuario creado satisfactoriamente";
+                        } else {
+                            alerta.innerHTML = "Lo sentimos, el nombre de usuario ya está ocupado, por favor elija otro.";
+                            document.querySelector("#nombre-usuario").classList.toggle("red-border")
+                        }
+                    } else {
+                        alerta.innerHTML = "los e-mails escritos no coinciden. por favor intente nuevamente.";
+                        document.querySelector("#email-1").classList.toggle("red-border");
+                        document.querySelector("#email-2").classList.toggle("red-border");
+                    }
+                } else {
+                    alerta.innerHTML = "las contraseñas no coinciden, intentelo nuevamente.";
+                    document.querySelector("#contraseña-1").classList.toggle("red-border");
+                    document.querySelector("#contraseña-2").classList.toggle("red-border");
+                }
+            }
         }
     });
 }
@@ -198,7 +314,7 @@ function MENUBUSQUEDA() {
                 document.getElementsByClassName("contenido")[0].appendChild(cabecera);
                 cabecera.innerHTML = `
                 <p>Hemos encontrado los siguientes items relacionados con: "${busqueda}"</p>
-                <div class=resultado-cabecera> 
+                <div class="resultado-cabecera"> 
                 <div class="td-tipo">tipo</div>
                     <div class="td-nombre">nombre</div>
                     <div class="td-precio">precio</div>
@@ -469,8 +585,8 @@ function MENUCARRITO() {
                 e.preventDefault();
                 pago = parseFloat(e.target[0].value);
                 document.querySelectorAll("input").forEach((input) => {
-                        input.value = "";
-                    });
+                    input.value = "";
+                });
                 if (pago == precioConIva.toFixed(2)) {
                     alerta.innerHTML = "El pago de: $" + precioConIva.toFixed(2) + " se ha acreditado correctamente.";
                     CIERREDECOMPRA();
