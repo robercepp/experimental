@@ -4,7 +4,7 @@
 
 //Constructor de Usuarios.
 class Usuario {
-    constructor(id, nombreDeUsuario, nombre, apellido, edad, email, contrasena) {
+    constructor(id, nombreDeUsuario, nombre, apellido, edad, email, contrasena, pregunta, respuesta) {
         this.id = id;
         this.nombreDeUsuario = nombreDeUsuario;
         this.nombre = nombre;
@@ -12,6 +12,8 @@ class Usuario {
         this.edad = parseFloat(edad);
         this.email = email;
         this.contrasena = contrasena;
+        this.pregunta = pregunta;
+        this.respuesta = respuesta;
     }
 }
 
@@ -85,8 +87,6 @@ modoobscuro.addEventListener('click', () => {
 });
 
 
-
-
 //A partir de aquí comienza el menú...
 BIENVENIDA();
 
@@ -106,7 +106,7 @@ function BIENVENIDA() {
     </form>
     <div class="elements-especial">
     <a id="crearCuenta" class= "pista" href="">crear una cuenta</a>
-    <a class= "pista" href="">olvidé mi contraseña</a>
+    <a id="recuperarCuenta" class= "pista" href="">olvidé mi contraseña</a>
     </div>
     `
     const formulario = document.getElementById("formulario");
@@ -118,16 +118,16 @@ function BIENVENIDA() {
             const chequearUsuario = obj => obj.nombreDeUsuario === e.target[0].value;
             if (usuarios.some(chequearUsuario) === false) {
                 alerta.innerHTML = "No se encuentra al usuario"
-            }else {
+            } else {
                 const encontrado = usuarios.find((user) => {
                     return user.nombreDeUsuario === e.target[0].value;
-                  });
-                  if (encontrado.contrasena === e.target[1].value) {
+                });
+                if (encontrado.contrasena === e.target[1].value) {
                     nombre = encontrado.nombre
                     bienvenido.innerHTML = "Bienvenido/a, " + nombre;
                     alerta.replaceChildren();
                     MENUPRINCIPAL(), 0;
-                  }
+                }
             }
         }
     });
@@ -135,13 +135,123 @@ function BIENVENIDA() {
     crearCuenta.addEventListener("click", (e) => {
         e.preventDefault();
         CREARUSUARIO();
+    });
+    const recuperarContrasena = document.getElementById("recuperarCuenta");
+    recuperarContrasena.addEventListener("click", (e) => {
+        e.preventDefault();
+        RECUPERARUSUARIO();
+    })
+}
+
+function RECUPERARUSUARIO() {
+    titulo.innerHTML = "---Asistente de recuperación de Contraseña---";
+    contenido.innerHTML = `
+    <p class="elements"> Bienvenido al asistente de recuperación de contraseña </p>
+    <p class="elements">le haremos algunas preguntas para verificar su identidad</p>
+    <p class="pista">paso 1</p>
+    <form id="formulario" class="menu-intro">
+    <p class="pista">cuál es tu nombre de usuario?</p>
+    <div class="elements">
+    <input id="nombre-usuario" class="inputs" placeholder="nombre de usuario" type="text">
+    </div>
+    <div class="button-container">
+    <button type="reset" value="reset" class="button">Limpiar</button>
+    <button id="continuar" type="submit" class="button">Siguiente</button>
+    </div>
+    </form>
+    <button id="salida">volver</button>
+    `
+    const volver = document.getElementById("salida");
+    volver.addEventListener("mouseup", (e) => {
+        e.preventDefault();
+        alerta.innerHTML = "";
+        BIENVENIDA();
+    });
+    const paso1 = document.getElementById("formulario");
+    paso1.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const chequearUsuario = obj => obj.nombreDeUsuario === e.target[0].value;
+        if (usuarios.some(chequearUsuario) === false) {
+            alerta.innerHTML = "No se encuentra al usuario"
+        } else {
+            const encontrado = usuarios.find((user) => {
+                return user.nombreDeUsuario === e.target[0].value;
+            });
+            contenido.innerHTML = `
+    <p class="elements">Su cuenta '${encontrado.nombreDeUsuario}' ha sido detectada</p>
+    <form id="formulario2" class="menu-intro">
+    <p class="pista">paso 2</p>
+    <div class="elements">
+    <p class="pista">cuál es tu correo electrónico</p>
+    <input id="e-mail" class="inputs" placeholder="usuario@servidor.com" type="email">
+    </div>
+    <div class="elements">
+    <p class="pista">cuantos años tenés?</p>
+    <input id="edad" class="inputs" placeholder="tu edad" type="number">
+    </div>
+    <div class="button-container">
+    <button type="reset" value="reset" class="button">Limpiar</button>
+    <button id="continuar" type="submit" class="button">Siguiente</button>
+    </div>
+    </form>
+    <button id="salida">volver</button>
+    `
+            const paso2 = document.getElementById("formulario2");
+            paso2.addEventListener("submit", (e) => {
+                e.preventDefault();
+                if (encontrado.email == e.target[0].value) {
+                    if (encontrado.edad === parseInt(e.target[1].value)) {
+
+                        contenido.innerHTML = `
+    <p class="elements">Una última pregunta. agradecemos su paciencia.</p>
+    <form id="formulario3" class="menu-intro">
+    <p class="pista">paso 3</p>
+    <div class="elements">
+    <p class="pista">${encontrado.pregunta}</p>
+    <input id="pregunta" class="inputs" placeholder="su respuesta aquí" type="text">
+    </div>
+    <div class="button-container">
+    <button type="reset" value="reset" class="button">Limpiar</button>
+    <button id="continuar" type="submit" class="button">Siguiente</button>
+    </div>
+    </form>
+    <button id="salida">volver</button>
+    `
+                        const paso3 = document.getElementById("formulario3");
+                        paso3.addEventListener("submit", (e) => {
+                            e.preventDefault();
+                            if (encontrado.respuesta === e.target[0].value) {
+                                contenido.innerHTML = `
+    <p class="elements">Su contraseña es: "${encontrado.contrasena}"</p>
+    <p class="elements">gracias por su paciencia.</p>
+    <button id="salida">volver</button>
+    `
+                                const volver = document.getElementById("salida");
+                                volver.addEventListener("mouseup", (e) => {
+                                    e.preventDefault();
+                                    alerta.innerHTML = "";
+                                    BIENVENIDA();
+                                });
+                            } else {
+                                alerta.innerHTML = "alerta: su respuesta no es correcta";
+                            }
+                        });
+                    } else {
+                        alerta.innerHTML = "alerta: la edad ingresada no es la correcta";
+                    }
+                } else {
+                    alerta.innerHTML = "el email no coincide con el registrado en nuestra base de datos";
+                }
+            });
+        }
     })
 }
 
 function CREARUSUARIO() {
     titulo.innerHTML = "---Creador de Cuenta---";
     contenido.innerHTML = `
-<p class="elements"> Por favor ingrese su nombre de usuario y contraseña </p>
+<p class="elements"> En esta sección podrás crear tu cuenta! </p>
+<p class="pista">por favor llena todos los campos a continuación</p>
 <form id="formulario" class="menu-intro">
 <div class="elements">
 <input id="nombre-usuario" class="inputs" placeholder="Elige un nombre de usuario" type="text">
@@ -162,7 +272,12 @@ function CREARUSUARIO() {
 </div>
 <div class="elements">
 <input id="contraseña-1" class="inputs" placeholder="contraseña" type="password">
-<input id="contraseña-2" class="inputs" placeholder="contraseña" type="password">
+<input id="contraseña-2" class="inputs" placeholder="repita contraseña" type="password">
+</div>
+<div class="elements center">
+<p class="pista"> Ingrese una pregunta y una respuesta que le servirá para recuperar su contraseña.</p>
+<input id="pregunta" class="inputs separador" placeholder="ej: nombre de mascota?" type="text">
+<input id="respuesta" class="inputs separador" placeholder="respuesta" type="text">
 </div>
 <div class="button-container">
 <button type="reset" value="reset" class="button">Limpiar</button>
@@ -178,30 +293,31 @@ function CREARUSUARIO() {
         BIENVENIDA();
     });
     const agregarUsuario = document.getElementById("formulario");
-    agregarUsuario.addEventListener("submit", (e) => { 
+    agregarUsuario.addEventListener("submit", (e) => {
         e.preventDefault();
         const chequearUsuario = obj => obj.nombreDeUsuario === e.target[0].value;
         const años = parseInt(e.target[3].value);
+
         function calcularEdad(cumpleaños) {
             var edadDifMs = Date.now() - cumpleaños;
             var ageDate = new Date(edadDifMs);
             return Math.abs(ageDate.getUTCFullYear() - años);
         }
-        if(e.target[6].value === "" || e.target[7].value === "") {
+        if (e.target[6].value === "" || e.target[7].value === "") {
             alerta.innerHTML = "cuidado, debes escribir una contraseña ";
             document.querySelector("#contraseña-1").classList.toggle("red-border");
             document.querySelector("#contraseña-2").classList.toggle("red-border");
         } else {
-            if(e.target[4].value === "" || e.target[5].value === ""){
+            if (e.target[4].value === "" || e.target[5].value === "") {
                 alerta.innerHTML = "cuidado, debes escribir una email válido.";
-                    document.querySelector("#email-1").classList.toggle("red-border");
-                    document.querySelector("#email-2").classList.toggle("red-border");
+                document.querySelector("#email-1").classList.toggle("red-border");
+                document.querySelector("#email-2").classList.toggle("red-border");
             } else {
                 if (e.target[6].value === e.target[7].value) {
                     if (e.target[4].value === e.target[5].value) {
                         if (usuarios.some(chequearUsuario) === false || usuarios == []) {
                             idcounter = idcounter + 1
-                            const newUser = new Usuario(idcounter, e.target[0].value, e.target[1].value, e.target[2].value, calcularEdad(años), e.target[4].value, e.target[6].value)
+                            const newUser = new Usuario(idcounter, e.target[0].value, e.target[1].value, e.target[2].value, calcularEdad(años), e.target[4].value, e.target[6].value, e.target[8].value, e.target[9].value);
                             usuarios.push(newUser)
                             document.querySelectorAll('#formulario input').forEach((input) => {
                                 input.value = '';

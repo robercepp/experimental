@@ -249,6 +249,16 @@ margin: 0 5px;
     background-color: cornflowerblue;
 }
 
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.separador {
+    margin: 10px;
+}
+
 /* Opciones de Menú de busqueda, catalogos y carrito */
 
 .buscador-container {
